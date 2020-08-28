@@ -207,25 +207,46 @@ fn process_line_segment(line_segment: LineSegment2F,
     let from_tile_coords = Vector2I(tile_line_segment.xy());
     let to_tile_coords = Vector2I(tile_line_segment.zw());
 
+    // RC: Added debug
+    //debug!("from_tile_coords: {} {}, to_tile_coords: {} {}", from_tile_coords.x(), from_tile_coords.y(), to_tile_coords.x(), to_tile_coords.y());
+
     // Compute `vector_is_negative = vec2i(vector.x < 0 ? -1 : 0, vector.y < 0 ? -1 : 0)`.
     let vector = line_segment.vector();
+    // RC: Added debug
+    //debug!("vector: {} {}", vector.x(), vector.y());
+
     let vector_is_negative = vector.0.packed_lt(F32x2::default());
 
     // Compute `step = vec2f(vector.x < 0 ? -1 : 1, vector.y < 0 ? -1 : 1)`.
     let step = Vector2I((vector_is_negative | U32x2::splat(1)).to_i32x2());
+    // RC: Added debug
+    //debug!("step: {} {}", step.x(), step.y());
 
     // Compute `first_tile_crossing = (from_tile_coords + vec2i(vector.x >= 0 ? 1 : 0,
     // vector.y >= 0 ? 1 : 0)) * tile_size`.
     let first_tile_crossing = (from_tile_coords +
         Vector2I((!vector_is_negative & U32x2::splat(1)).to_i32x2())).to_f32() * tile_size;
+    // RC: Added debug
+    //debug!("first_tile_crossing: {} {}", first_tile_crossing.x(), first_tile_crossing.y());
 
     let mut t_max = (first_tile_crossing - line_segment.from()) / vector;
     let t_delta = (tile_size / vector).abs();
 
+    // RC: Added debug
+    //debug!("t_delta: {} {}", t_delta.x(), t_delta.y());
+
     let (mut current_position, mut tile_coords) = (line_segment.from(), from_tile_coords);
     let mut last_step_direction = None;
 
+
+
     loop {
+
+        // RC: Added debug
+        // debug!("t_max: {} {}", t_max.x(), t_max.y());
+        // debug!("current_position: {} {}", current_position.x(), current_position.y());
+        // debug!("tile_coords: {} {}", tile_coords.x(), tile_coords.y());
+
         let next_step_direction = if t_max.x() < t_max.y() {
             StepDirection::X
         } else if t_max.x() > t_max.y() {
@@ -260,6 +281,11 @@ fn process_line_segment(line_segment: LineSegment2F,
         let next_position = line_segment.sample(next_t);
         let clipped_line_segment = LineSegment2F::new(current_position, next_position);
         object_builder.add_fill(scene_builder, clipped_line_segment, tile_coords);
+
+        // RC: Added debug
+        // debug!("next_t: {}", next_t);
+        // debug!("next_position: {} {}", next_position.x(), next_position.y());
+        // debug!("clipped_line_segment: {} {} -- {} {}", clipped_line_segment.from().x(), clipped_line_segment.from().y(), clipped_line_segment.to().x(), clipped_line_segment.to().y());
 
         // Add extra fills if necessary.
         if step.y() < 0 && next_step_direction == Some(StepDirection::Y) {

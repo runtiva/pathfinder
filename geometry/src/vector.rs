@@ -18,6 +18,18 @@ use std::ops::{Add, AddAssign, Div, Mul, MulAssign, Neg, Sub, SubAssign};
 #[derive(Clone, Copy, Debug, Default)]
 pub struct Vector2F(pub F32x2);
 
+use std::fmt;
+impl fmt::Display for Vector2F {
+    // This trait requires `fmt` with this exact signature.
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        // Write strictly the first element into the supplied output
+        // stream: `f`. Returns `fmt::Result` which indicates whether the
+        // operation succeeded or failed. Note that `write!` uses syntax which
+        // is very similar to `println!`.
+        write!(f, "{} {}", self.x(), self.y())
+    }
+}
+
 impl Vector2F {
     #[inline]
     pub fn new(x: f32, y: f32) -> Vector2F {

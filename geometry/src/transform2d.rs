@@ -175,6 +175,15 @@ impl Transform2F {
     }
 
     #[inline]
+    // RC: Adding y_axis_flip matrix
+    pub fn from_y_axis_flip(viewport_height: f32) -> Transform2F {
+        Transform2F {
+            matrix: Matrix2x2F::row_major(1.0, 0.0, 0.0, -1.0),
+            vector: Vector2F::new(0.0, viewport_height),
+        }
+    }
+
+    #[inline]
     pub fn from_scale_rotation_translation<S>(scale: S, theta: f32, translation: Vector2F)
                                               -> Transform2F where S: IntoVector2F {
         let scale = scale.into_vector_2f();
