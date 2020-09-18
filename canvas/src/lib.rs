@@ -366,6 +366,10 @@ impl CanvasRenderingContext2D {
         self.current_state.clip_path = Some(clip_path_id);
     }
 
+    pub fn clear_clip_path(&mut self) {
+        self.current_state.clip_path = None;
+    }
+
     fn push_path(&mut self, mut outline: Outline, path_op: PathOp, fill_rule: FillRule) {
         let paint = self.current_state.resolve_paint(match path_op {
             PathOp::Fill => &self.current_state.fill_paint,
@@ -819,6 +823,11 @@ impl Path2D {
             self.outline.push_contour(contour);
         }
         self.current_contour = last_contour.unwrap_or_else(Contour::new);
+    }
+
+    // RC: Adding method to retrieve current point. Used for bezier curves that use the current point as one of the control points
+    pub fn get_current_endpoint(&self) -> Option<Vector2F> {
+        self.current_contour.last_position()
     }
 
     pub fn into_outline(mut self) -> Outline {

@@ -50,8 +50,6 @@ use std::time::Instant;
 use log::LevelFilter;
 use env_logger::{Builder, Target};
 
-mod pathfinder_device;
-
 fn main() {
     //test_pdf_transform();
     Builder::new()
@@ -226,6 +224,7 @@ fn main() {
     path.close_path();
     canvas.stroke_path(path);
 
+    
 
 
     let mut path = Path2D::new();

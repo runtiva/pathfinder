@@ -5,8 +5,8 @@ edition = "2018"
 authors = ["Patrick Walton <pcwalton@mimiga.net>"]
 description = "A GPU-accelerated SVG renderer"
 license = "MIT/Apache-2.0"
-repository = "https://github.com/servo/pathfinder"
-homepage = "https://github.com/servo/pathfinder"
+repository = "https://github.com/runtiva/pathfinder"
+homepage = "https://github.com/runtiva/pathfinder"
 keywords = ["pathfinder", "svg", "vector", "graphics", "gpu"]
 
 [dependencies]
@@ -16,20 +16,20 @@ usvg = "0.9"
 
 [dependencies.pathfinder_color]
 path = "../color"
-version = "0.5"
+version = "0.5.5"
 
 [dependencies.pathfinder_content]
 path = "../content"
-version = "0.5"
+version = "0.5.5"
 
 [dependencies.pathfinder_geometry]
 path = "../geometry"
-version = "0.5"
+version = "0.5.5"
 
 [dependencies.pathfinder_renderer]
 path = "../renderer"
-version = "0.5"
+version = "0.5.5"
 
 [dependencies.pathfinder_simd]
 path = "../simd"
-version = "0.5"
+version = "0.5.5"
